@@ -25,13 +25,5 @@ add_executable(fsd
         src/user.cpp
         src/wprofile.cpp)
         
-if (UNIX)
-find_package(SQLite3 REQUIRED)
-endif (UNIX)
-if (MSVC)
-set_property(TARGET fsd PROPERTY VS_PACKAGE_REFERENCES "System.Data.SQLite_1.0.115.5")
-endif (MSVC)
-target_link_libraries(fsd sqlite3)
-        
 set_property(TARGET fsd PROPERTY CMAKE_CXX_STANDARD 17)
 set_property(TARGET fsd PROPERTY CMAKE_CXX_STANDARD_REQUIRED ON)
