@@ -176,12 +176,12 @@ void cluser::execaa(char **s, int count)
       kill(KILL_COMMAND);
       return;
    }
-   if (atoi(s[6])!=NEEDREVISION)
+   /*if (atoi(s[6])!=NEEDREVISION)
    {
       showerror(ERR_REVISION, "");
       kill(KILL_PROTOCOL);
       return;
-   }
+   }*/
    int req=atoi(s[5]);
    if (req<0) req=0;
    int level=checklogin(s[3], s[4], req);
