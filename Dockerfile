@@ -1,9 +1,9 @@
 ARG ALPINE_VERSION=3.18
-FROM alpine:${ALPINE_VERSION} as build
+FROM alpine:${ALPINE_VERSION} AS build
 
-ENV CMAKE_GENERATOR Ninja
-ENV CMAKE_BUILD_PARALLEL_LEVEL 8
-ENV CXX /usr/bin/clang++
+ENV CMAKE_GENERATOR=Ninja
+ENV CMAKE_BUILD_PARALLEL_LEVEL=8
+ENV CXX=/usr/bin/clang++
 
 RUN apk add --no-cache \
   cmake \
@@ -21,7 +21,7 @@ WORKDIR /fsd/build
 RUN cmake ..
 RUN cmake --build .
 
-FROM alpine:${ALPINE_VERSION} as runner
+FROM alpine:${ALPINE_VERSION} AS runner
 
 RUN apk add --no-cache \
   libstdc++
