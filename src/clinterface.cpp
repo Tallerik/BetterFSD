@@ -130,8 +130,19 @@ int clinterface::getbroad(char *s)
    if (!strcmp(s,"*A")) broad=CLIENT_ATC;
    return broad;
 }
+
+/**
+ *
+ * @param to Callsign
+ * @param dest client
+ * @param ex
+ * @param source
+ * @param from Can be "server"
+ * @param s Message
+ * @param cmd Command
+ */
 void clinterface::sendgeneric(char *to, client *dest, absuser *ex,
-   client *source, char *from, char *s, int cmd)
+                              client *source, char *from, char *s, int cmd)
 {
    char buf[1000];
    int range=-1;

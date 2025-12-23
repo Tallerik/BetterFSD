@@ -27,7 +27,9 @@ class cluser : public absuser
    void execcq(char **, int);
    void execkill(char **, int);
    void readmotd();
-   public:
+   void enableVisualPilotUpdate();
+
+public:
 
    client *thisclient;
    cluser(int, clinterface *, char *, int, int);

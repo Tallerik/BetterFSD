@@ -50,8 +50,9 @@
 #define CL_CR         25
 #define CL_KILL       26
 #define CL_WDELTA     27
+#define CL_VISUPDATES 28
 
-#define CL_MAX        27
+#define CL_MAX        28
 
 #define CERT_ADD       0
 #define CERT_DELETE    1

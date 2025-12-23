@@ -46,7 +46,8 @@ const char *clcmdnames[]=
    "$CR",
    "$!!",
    "#DL",
-   NULL
+   "$SF",
+   NULL // Index 29
 };
 
 const char *errstr[]=
@@ -106,6 +107,11 @@ void cluser::readmotd()
          NULL, "server", line, CL_MESSAGE);
    }
    fclose(io);
+}
+void cluser::enableVisualPilotUpdate()
+{
+   clientinterface->sendgeneric(thisclient->callsign, thisclient, NULL,
+     NULL, "SERVER", "1", CL_VISUPDATES);
 }
 void cluser::parse(char *s)
 {
@@ -257,6 +263,7 @@ void cluser::execap(char **s, int count)
       atoi(s[6]));
    serverinterface->sendaddclient("*",thisclient, NULL, this, 0);
    readmotd();
+   enableVisualPilotUpdate();
 }
 void cluser::execmulticast(char **s, int count, int cmd, int nargs, int multiok)
 {
