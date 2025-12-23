@@ -111,7 +111,10 @@ void cluser::readmotd()
 void cluser::enableVisualPilotUpdate()
 {
    clientinterface->sendgeneric(thisclient->callsign, thisclient, NULL,
-     NULL, "SERVER", "1", CL_VISUPDATES);
+     NULL, "SERVER", "1", CL_VISUPDATES); // $SFSERVER:empfänger:1
+   clientinterface->sendgeneric(thisclient->callsign, thisclient, NULL,
+     NULL, "SERVER", "CAPS", CL_CQ); // $CQSERVER:empfänger:CAPS
+
 }
 void cluser::parse(char *s)
 {
