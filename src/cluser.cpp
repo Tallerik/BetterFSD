@@ -236,12 +236,12 @@ void cluser::execap(char **s, int count)
       kill(KILL_COMMAND);
       return;
    }
-   if (atoi(s[5])!=NEEDREVISION)
-   {
-      showerror(ERR_REVISION, "");
-      kill(KILL_PROTOCOL);
-      return;
-   }
+   // if (atoi(s[5])!=NEEDREVISION)
+   // {
+   //    showerror(ERR_REVISION, "");
+   //    kill(KILL_PROTOCOL);
+   //    return;
+   // }
    int req=atoi(s[4]);
    if (req<0) req=0;
    int level=checklogin(s[2], s[3], req);
@@ -434,7 +434,9 @@ void cluser::doparse(char *s)
    int index=getcomm(cmd), count;
    if (index==-1)
    {
-      showerror(ERR_SYNTAX, "");
+      dolog(L_WARNING,"Unknown command from %s: %s", thisclient?
+         thisclient->callsign:"unknown", s);
+      //showerror(ERR_SYNTAX, "");
       return;
    }
    if (!thisclient&&index!=CL_ADDATC&&index!=CL_ADDPILOT) return;

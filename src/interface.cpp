@@ -193,6 +193,8 @@ void tcpinterface::newuser(void)
    unsigned long io=1;
    ioctlsocket(sock,FIONBIO,&io);
 #endif
+   char *message="$DISERVER:CLIENT:VATSIM FSD V3.53a:d19e88394cc2\r\n";
+   WRITESOCK(fd,message,strlen(message));
    newuser(fd, buf, ntohs(saddr.sin_port), 0);
 }
 void tcpinterface::newuser(int fd, char *peername, int portnum, int g)
