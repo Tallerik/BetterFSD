@@ -51,6 +51,7 @@
 #define CL_KILL       26
 #define CL_WDELTA     27
 #define CL_VISUPDATES 28
+#define CL_FASTPOS    29
 
 #define CL_MAX        28
 

@@ -47,7 +47,8 @@ const char *clcmdnames[]=
    "$!!",
    "#DL",
    "$SF",
-   NULL // Index 29
+   "^",
+   NULL // Index 30
 };
 
 const char *errstr[]=
@@ -282,6 +283,14 @@ void cluser::execmulticast(char **s, int count, int cmd, int nargs, int multiok)
    if (!checksource(from)) return;
    serverinterface->sendmulticast(thisclient, to, data, cmd, multiok, this);
 }
+void cluser::execfastupdatemulticast(char **s, int count, int cmd, int multiok)
+{
+   char *from, *to, data[1000]="";
+   catcommand(s+1, count-1, data);
+   from=s[0], to=s[1];
+   if (!checksource(from)) return;
+   serverinterface->sendmulticast(thisclient, "*", data, cmd, multiok, this);
+}
 void cluser::execd(char **s, int count)
 {
    if (count==0)
@@ -465,6 +474,7 @@ void cluser::doparse(char *s)
       case CL_CR         : execmulticast(array, count, index, 2, 0); break;
       case CL_CQ         : execcq(array, count); break;
       case CL_KILL       : execkill(array, count); break;
+      case CL_FASTPOS    : execfastupdatemulticast(array,count,index,1); break;
       default            : showerror(ERR_SYNTAX, ""); break;
    }
 }

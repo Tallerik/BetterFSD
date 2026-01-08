@@ -19,6 +19,7 @@ class cluser : public absuser
    void execaa(char **, int);
    void execap(char **, int);
    void execmulticast(char **, int, int, int, int);
+   void execfastupdatemulticast(char** s, int count, int cmd, int multiok);
    void execpilotpos(char **, int);
    void execatcpos(char **, int);
    void execfp(char **, int);
