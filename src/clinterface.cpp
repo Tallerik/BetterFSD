@@ -146,7 +146,11 @@ void clinterface::sendgeneric(char *to, client *dest, absuser *ex,
 {
    char buf[1000];
    int range=-1;
-   sprintf(buf,"%s:%s:%s",from,to,s);
+   if (cmd == CL_FASTPOS) {
+      sprintf(buf,"%s:%s",from,s);
+   } else {
+      sprintf(buf,"%s:%s:%s",from,to,s);
+   }
    if (to[0]=='@'&&source)
       range=source->getrange();     
    sendpacket(dest, source, ex, getbroad(to), range, cmd, buf);

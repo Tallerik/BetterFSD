@@ -285,10 +285,9 @@ void cluser::execmulticast(char **s, int count, int cmd, int nargs, int multiok)
 }
 void cluser::execfastupdatemulticast(char **s, int count, int cmd, int multiok)
 {
-   char *from, *to, data[1000]="";
+   char data[1000]="";
    catcommand(s+1, count-1, data);
-   from=s[0], to=s[1];
-   if (!checksource(from)) return;
+   if (!checksource(s[0])) return;
    serverinterface->sendmulticast(thisclient, "*", data, cmd, multiok, this);
 }
 void cluser::execd(char **s, int count)
