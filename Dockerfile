@@ -23,6 +23,10 @@ RUN cmake --build .
 
 FROM alpine:${ALPINE_VERSION} AS runner
 
+EXPOSE 6809
+EXPOSE 3012
+EXPOSE 3011
+
 RUN apk add --no-cache \
   libstdc++
 
