@@ -48,7 +48,8 @@ const char *clcmdnames[]=
    "#DL",
    "$SF",
    "^",
-   NULL // Index 30
+   "$AM",
+   NULL // Index 31
 };
 
 const char *errstr[]=
@@ -333,6 +334,20 @@ void cluser::execfp(char **array, int count)
    thisclient->handlefp(array+2);
    serverinterface->sendplan("*", thisclient, NULL);
 }
+void cluser::execfpam(char **array, int count) {
+   if (count<17)
+   {
+      showerror(ERR_SYNTAX, "");
+      return;
+   }
+   if (!checksource(array[0])) return;
+   client *cl=getclient(array[2]);
+   for (int i = 2; i < count-1; i++) {
+      array[i]=array[i+1];
+   }
+   cl->handlefp(array+2);
+   serverinterface->sendplan("*", cl, NULL);
+}
 void cluser::execweather(char **array, int count)
 {
    if (count<3)
@@ -455,6 +470,7 @@ void cluser::doparse(char *s)
       case CL_ADDATC     : execaa(array,count);  break;
       case CL_ADDPILOT   : execap(array,count);  break;
       case CL_PLAN       : execfp(array,count); break;
+      case AM_PLAN       : execfpam(array, count); break;
       case CL_RMATC      : /* Handled like RMPILOT */
       case CL_RMPILOT    : execd(array,count); break;
       case CL_PILOTPOS   : execpilotpos(array,count); break;
