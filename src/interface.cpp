@@ -31,8 +31,9 @@ const char *killreasons[]=
    "socket stalled",
    "connection closed",
    "write error",
-   "killed on command",
-   "protocol revision error"
+   "killed by admin",
+   "protocol revision error",
+   "Disconnected by user"
 };
 tcpinterface::tcpinterface(int port, char *code, char *descr)
 {

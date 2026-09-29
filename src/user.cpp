@@ -46,7 +46,7 @@ absuser::~absuser()
    manager->incvar(baseparent->varclosed[killflag]);
    if (killflag!=KILL_CLOSED&&killflag!=KILL_WRITEERR)
       output();
-   if (killflag!=KILL_COMMAND&&guardflag)
+   if ((killflag != KILL_COMMAND && killflag != KILL_DISCONNECT) && guardflag)
       baseparent->addguard(this);
    CLOSESOCKET(fd); 
    free(inbuf); free(outbuf);

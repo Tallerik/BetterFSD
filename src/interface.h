@@ -31,6 +31,7 @@ extern const char *killreasons[];
 #define KILL_WRITEERR 6
 #define KILL_KILL 7
 #define KILL_PROTOCOL 8
+#define KILL_DISCONNECT 9
 
 #define FEED_IN 1
 #define FEED_OUT 2

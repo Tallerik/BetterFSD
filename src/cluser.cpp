@@ -89,6 +89,9 @@ cluser::~cluser()
    if (thisclient) 
    {
       int type=thisclient->type;
+      if (type==CLIENT_ATC) {
+         dolog(L_INFO, "%s: ATC Callsign %s logged out: %s", peer, thisclient->callsign, killreasons[killflag]);
+      }
       serverinterface->sendrmclient(NULL,"*",thisclient, this);
       delete thisclient;
    }
@@ -169,6 +172,7 @@ int cluser::checklogin(char *id, char *pwd, int req)
 }
 void cluser::execaa(char **s, int count)
 {
+   char *cs = s[0];
    if (thisclient)
    {
       showerror(ERR_REGISTERED, "");
@@ -182,6 +186,7 @@ void cluser::execaa(char **s, int count)
    int err=callsignok(s[0]);
    if (err)
    {
+      dolog(L_ERR, "%s: Callsign %s is invalid or in use: %s", peer, cs, errstr[err]);
       showerror(err, "");
       kill(KILL_COMMAND);
       return;
@@ -203,16 +208,19 @@ void cluser::execaa(char **s, int count)
    }
    else if (level==-1)
    {
+      dolog(L_ERR, "%s: Callsign %s has invalid CID/PID", peer, cs);
       kill(KILL_COMMAND);
       return;
    }
    else if (level==-2) level=1;
    if (level<req)
    {
+      dolog(L_ERR, "%s: Callsign %s requested level %d but only has level %d", peer, cs, req, level);
       showerror(ERR_LEVEL, s[5]);
       kill(KILL_COMMAND);
       return;
    }
+   dolog(L_INFO, "%s: ATC Callsign %s logged in as %s (%s) with level %d", peer, s[0], s[2], s[3], level);
    thisclient=new client(s[3], myserver, s[0], CLIENT_ATC, level, s[6], s[2],
       -1);
    serverinterface->sendaddclient("*",thisclient, NULL, this, 0);
@@ -233,6 +241,7 @@ void cluser::execap(char **s, int count)
    int err=callsignok(s[0]);
    if (err)
    {
+      dolog(L_ERR, "%s: Callsign %s is invalid or in use: %s", peer, s[0], errstr[err]);
       showerror(err, "");
       kill(KILL_COMMAND);
       return;
@@ -248,6 +257,7 @@ void cluser::execap(char **s, int count)
    int level=checklogin(s[2], s[3], req);
    if (level<0)
    {
+      dolog(L_ERR, "%s: Callsign %s has invalid CID/PID", peer, s[0]);
       kill(KILL_COMMAND);
       return;
    }
@@ -263,6 +273,7 @@ void cluser::execap(char **s, int count)
       kill(KILL_COMMAND);
       return;
    }
+   dolog(L_INFO, "%s: Pilot Callsign %s logged in as %s (%s) with level %d", peer, s[0], s[2], s[3], level);
    thisclient=new client(s[2], myserver, s[0], CLIENT_PILOT, level, s[4], s[7],
       atoi(s[6]));
    serverinterface->sendaddclient("*",thisclient, NULL, this, 0);
@@ -298,7 +309,7 @@ void cluser::execd(char **s, int count)
       return;
    }
    if (!checksource(s[0])) return;
-   kill(KILL_COMMAND);
+   kill(KILL_DISCONNECT);
 }
 void cluser::execpilotpos(char **array, int count)
 {
@@ -367,6 +378,10 @@ void cluser::execcq(char **array, int count)
       showerror(ERR_SYNTAX, "");
       return;
    }
+
+   if (!STRCASECMP(array[2], "scomm") && !STRCASECMP(array[4], "ssp")) {
+      dolog(L_INFO, "%s: %s set the sim-speed to %sx", peer, thisclient->callsign, array[5]);
+   }
    if (STRCASECMP(array[1], "server"))
    { 
       execmulticast(array, count, CL_CQ, 1, 1);
@@ -421,7 +436,7 @@ void cluser::execkill(char ** array, int count)
 	sprintf(junk, "You are not allowed to kill users!");
 	clientinterface->sendgeneric(thisclient->callsign, thisclient, NULL,
 		NULL, "server", junk, CL_MESSAGE);
-	sprintf(junk,"%s attempted to remove %s, but was not allowed to",thisclient->callsign,array[1]);
+	sprintf(junk,"%s: %s attempted to remove %s, but was not allowed to", peer, thisclient->callsign,array[1]);
 	dolog(L_ERR,junk);
    }
    else
@@ -429,7 +444,7 @@ void cluser::execkill(char ** array, int count)
 	sprintf(junk, "Attempting to kill %s", array[1]);
 	clientinterface->sendgeneric(thisclient->callsign, thisclient, NULL,
 		NULL, "server", junk, CL_MESSAGE);
-        sprintf(junk,"%s Killed %s",thisclient->callsign,array[1]);
+        sprintf(junk,"%s: %s Killed %s", peer, thisclient->callsign,array[1]);
 	dolog(L_INFO,junk);
 	serverinterface->sendkill(cl,array[2]);
    }
