@@ -215,12 +215,12 @@ void cluser::execaa(char **s, int count)
    else if (level==-2) level=1;
    if (level<req)
    {
-      dolog(L_ERR, "%s: Callsign %s requested level %d but only has level %d", peer, cs, req, level);
+      dolog(L_ERR, "%s: Callsign %s requested level %d but only has level %d", peer, cs, certlevels[req], certlevels[level]);
       showerror(ERR_LEVEL, s[5]);
       kill(KILL_COMMAND);
       return;
    }
-   dolog(L_INFO, "%s: ATC Callsign %s logged in as %s (%s) with level %d", peer, s[0], s[2], s[3], level);
+   dolog(L_INFO, "%s: ATC Callsign %s logged in as %s (%s) with level %s", peer, s[0], s[2], s[3], certlevels[req]);
    thisclient=new client(s[3], myserver, s[0], CLIENT_ATC, level, s[6], s[2],
       -1);
    serverinterface->sendaddclient("*",thisclient, NULL, this, 0);
