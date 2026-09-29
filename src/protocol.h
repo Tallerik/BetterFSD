@@ -52,6 +52,7 @@
 #define CL_WDELTA     27
 #define CL_VISUPDATES 28
 #define CL_FASTPOS    29
+#define AM_PLAN       30
 
 #define CL_MAX        28
 

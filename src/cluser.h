@@ -23,6 +23,9 @@ class cluser : public absuser
    void execpilotpos(char **, int);
    void execatcpos(char **, int);
    void execfp(char **, int);
+
+   void execfpam(char **array, int count);
+
    void execweather(char **, int);
    void execacars(char **, int);
    void execcq(char **, int);
