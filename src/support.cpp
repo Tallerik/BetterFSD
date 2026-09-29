@@ -64,8 +64,8 @@ void dolog(int level, const char *string, ...)
    vsprintf(buf,string,ap);
    va_end(ap);
 
-   sprintf(buf2,"%02d-%02d-%02d %02d:%02d:%02d %s: %s%s",
-      loctime->tm_mday, loctime->tm_mon+1, loctime->tm_year,
+   sprintf(buf2,"%04d-%02d-%02d %02d:%02d:%02d %s: %s%s",
+      loctime->tm_year+1900, loctime->tm_mon+1, loctime->tm_mday,
       loctime->tm_hour,loctime->tm_min,loctime->tm_sec, sident,
       (level<L_WARNING)?"** ":"", buf);
    fprintf(logfile,"%s\n", buf2);
